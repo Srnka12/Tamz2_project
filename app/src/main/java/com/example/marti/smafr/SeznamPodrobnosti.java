@@ -7,10 +7,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.DatePicker;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -54,16 +52,9 @@ public class SeznamPodrobnosti extends Activity implements DatePicker.OnDateChan
         myDate.init(globalYear, (globalMonth - 1), globalDate, this);
 
         np = (NumberPicker) findViewById(R.id.npKusyU);
-
-        //Populate NumberPicker values from minimum and maximum value range
-        //Set the minimum value of NumberPicker
         np.setMinValue(0);
-        //Specify the maximum value/number of NumberPicker
         np.setMaxValue(20);
-
-        //Gets whether the selector wheel wraps when reaching the min/max value.
         np.setWrapSelectorWheel(true);
-
         np.setValue(intent.getIntExtra("kusy", 0));
 
         img = (ImageView) findViewById(R.id.imgObrazekU);
@@ -115,7 +106,9 @@ public class SeznamPodrobnosti extends Activity implements DatePicker.OnDateChan
         Log.d("kusu", " " + np.getValue());
 
         Intent intent = new Intent(this, SeznamActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        finish();
     }
 
     public void SmazaniClick(View v)
@@ -127,6 +120,8 @@ public class SeznamPodrobnosti extends Activity implements DatePicker.OnDateChan
         db.deleteProdukt(produkt);
 
         Intent intent = new Intent(this, SeznamActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        finish();
     }
 }
