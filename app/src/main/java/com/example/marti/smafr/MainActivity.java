@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -21,7 +21,7 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
     TextView editTxtKusy;
 
     String globalDatum;
-    byte[] globalImg;
+    Bitmap globalImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +33,6 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
 
         datum = (DatePicker)findViewById(R.id.datum);
         datum.init(2017, 0, 1, this);
-
-
     }
 
     @Override
@@ -58,7 +56,8 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
 
     public void VlozeniClick(View v)
     {
-        Produkt produkt = new Produkt(editTxtJmeno.getText().toString(), globalDatum, Integer.parseInt(editTxtKusy.getText().toString()), globalImg);
+        Produkt produkt = new Produkt(editTxtJmeno.getText().toString(), globalDatum,
+                Integer.parseInt(editTxtKusy.getText().toString()), globalImg);
 
         DatabaseHelper db = new DatabaseHelper(this);
         db.insertProdukt(produkt);
@@ -68,29 +67,6 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
         Log.d("kusu", " " + editTxtKusy.getText());
     }
 
-    public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-        return outputStream.toByteArray();
-    }
-/*
-    public Bitmap getImage(int i){
-
-        String qu = "select img  from table where feedid=" + i ;
-        Cursor cur = db.rawQuery(qu, null);
-
-        if (cur.moveToFirst()){
-            byte[] imgByte = cur.getBlob(0);
-            cur.close();
-            return BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
-        }
-        if (cur != null && !cur.isClosed()) {
-            cur.close();
-        }
-
-        return null ;
-    }
-*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -101,8 +77,39 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
             if(requestCode == 1)
             {
                 Bitmap cameraImages = (Bitmap) data.getExtras().get("data");
-                globalImg = getBitmapAsByteArray(cameraImages);
+                globalImg = cameraImages;
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu (Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+
+        if(id == R.id.seznam)
+        {
+            //Toast.makeText(getApplicationContext(), "About", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent (this, SeznamActivity.class);
+            startActivity(intent);
+        }
+
+        if(id == R.id.vlozeni)
+        {
+            //Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
+            //Intent intent = new Intent(this, Main4Activity.class);
+            //startAactivity(intent);
+            //Activita zacina s request kodem 333
+            //startActivityForResult(intent, 333);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

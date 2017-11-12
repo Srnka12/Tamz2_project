@@ -1,5 +1,7 @@
 package com.example.marti.smafr;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by marti on 17. 10. 2017.
  */
@@ -12,14 +14,14 @@ public class Produkt {
     int rok;
     String datum;
     int kusy;
-    byte[] obrazek;
+    Bitmap obrazek;
 
     public Produkt()
     {
 
     }
 
-    public Produkt(String jmeno, String datum, int kusy, byte[] obrazek)
+    public Produkt(String jmeno, String datum, int kusy, Bitmap obrazek)
     {
         this.jmeno = jmeno;
         this.datum = datum;
@@ -27,7 +29,7 @@ public class Produkt {
         this.obrazek = obrazek;
     }
 
-    public Produkt(int id, String jmeno, String datum, int kusy, byte[] obrazek)
+    public Produkt(int id, String jmeno, String datum, int kusy, Bitmap obrazek)
     {
         this.id = id;
         this.jmeno = jmeno;
@@ -69,11 +71,11 @@ public class Produkt {
         this.kusy = kusy;
     }
 
-    public byte[] getObrazek() {
+    public Bitmap getObrazek() {
         return obrazek;
     }
 
-    public void setObrazek(byte[] obrazek) {
+    public void setObrazek(Bitmap obrazek) {
         this.obrazek = obrazek;
     }
 }

@@ -5,7 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         values.put(KEY_JMENO, produkt.getJmeno());
         values.put(KEY_DATUM, produkt.getDatum());
         values.put(KEY_KUSY, produkt.getKusy());
-        values.put(KEY_OBRAZEK, produkt.getObrazek());
+        values.put(KEY_OBRAZEK, getBitmapAsByteArray(produkt.getObrazek()));
 
         db.insert(TABLE_PRODUKTY, null, values);
         db.close();
@@ -69,7 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
 
         Produkt produkt = new Produkt(Integer.getInteger(cursor.getString(0)), cursor.getString(1), cursor.getString(2),
-                Integer.getInteger(cursor.getString(3)), cursor.getString(4).getBytes());
+                Integer.getInteger(cursor.getString(3)), BitmapFactory.decodeByteArray(cursor.getBlob(4), 0, cursor.getBlob(4).length));
 
         return produkt;
     }
@@ -78,7 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     {
         List<Produkt> produktList = new ArrayList<>();
 
-        String selectQuery = "SELECT *FROM" + TABLE_PRODUKTY;
+        String selectQuery = "SELECT * FROM " + TABLE_PRODUKTY;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -87,19 +90,26 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         {
             do {
                 Produkt produkt = new Produkt();
-                produkt.setId(Integer.parseInt(cursor.getString(0)));
+                produkt.setId(cursor.getInt(0));
                 produkt.setJmeno(cursor.getString(1));
                 produkt.setDatum(cursor.getString(2));
-                produkt.setKusy(Integer.getInteger(cursor.getString(3)));
-                produkt.setObrazek(cursor.getString(4).getBytes());
+                produkt.setKusy(cursor.getInt(3));
+
+                byte[] imgByte = cursor.getBlob(4);
+                produkt.setObrazek(BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
 
                 produktList.add(produkt);
             }
             while(cursor.moveToNext());
-
         }
 
         return produktList;
+    }
+
+    public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+        return outputStream.toByteArray();
     }
 
     public int updateProdukt(Produkt produkt)
@@ -110,7 +120,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         values.put(KEY_JMENO, produkt.getJmeno());
         values.put(KEY_DATUM, produkt.getDatum());
         values.put(KEY_KUSY, produkt.getKusy());
-        values.put(KEY_OBRAZEK, produkt.getObrazek());
+        values.put(KEY_OBRAZEK, getBitmapAsByteArray(produkt.getObrazek()));
 
         return db.update(TABLE_PRODUKTY, values, KEY_ID + "=?", new String[]{String.valueOf(produkt.getId())});
     }
@@ -124,7 +134,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public int getProduktCount()
     {
-        String countQuery = "SELECT *FROM" + TABLE_PRODUKTY;
+        String countQuery = "SELECT * FROM " + TABLE_PRODUKTY;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         cursor.close();
