@@ -3,6 +3,7 @@
 
     <item android:id="@+id/seznam"
         android:title="Seznam" />
-    <item android:id="@+id/vlozeni"
-        android:title="Vložení" />
+    <item
+        android:id="@+id/smazani"
+        android:title="Smazat vše" />
 </menu>

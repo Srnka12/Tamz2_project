@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.NumberPicker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -18,7 +18,7 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
 
     EditText editTxtJmeno;
     DatePicker datum;
-    TextView editTxtKusy;
+    NumberPicker np;
 
     String globalDatum;
     Bitmap globalImg;
@@ -29,10 +29,15 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
         setContentView(R.layout.activity_main);
 
         editTxtJmeno = (EditText)findViewById(R.id.editTxtJmeno);
-        editTxtKusy = (TextView)findViewById(R.id.editTxtKusy);
+
+        np = (NumberPicker) findViewById(R.id.npKusy);
+        np.setMinValue(0);
+        np.setMaxValue(20);
+        np.setWrapSelectorWheel(true);
 
         datum = (DatePicker)findViewById(R.id.datum);
         datum.init(2017, 0, 1, this);
+        globalDatum = "01" + "." + "01" + "." + "2017";
     }
 
     @Override
@@ -41,7 +46,7 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, monthOfYear, dayOfMonth);
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         globalDatum = format.format(calendar.getTime());
 
         //myText.setText(names[globalMonth]);
@@ -57,14 +62,20 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
     public void VlozeniClick(View v)
     {
         Produkt produkt = new Produkt(editTxtJmeno.getText().toString(), globalDatum,
-                Integer.parseInt(editTxtKusy.getText().toString()), globalImg);
+                np.getValue(), globalImg);
 
         DatabaseHelper db = new DatabaseHelper(this);
         db.insertProdukt(produkt);
 
         Log.d("jmeno", " " + editTxtJmeno.getText());
         Log.d("datum", " " + globalDatum);
-        Log.d("kusu", " " + editTxtKusy.getText());
+        Log.d("kusu", " " + np.getValue());
+
+        editTxtJmeno.setText(null);
+        datum.init(2017, 0, 1, this);
+        globalDatum = "01" + "." + "01" + "." + "2017";
+        np.setValue(0);
+        globalImg = null;
     }
 
     @Override
@@ -101,13 +112,14 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
             startActivity(intent);
         }
 
-        if(id == R.id.vlozeni)
+        if(id == R.id.smazani)
         {
             //Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
             //Intent intent = new Intent(this, Main4Activity.class);
             //startAactivity(intent);
             //Activita zacina s request kodem 333
             //startActivityForResult(intent, 333);
+            this.deleteDatabase("produktManager");
         }
 
         return super.onOptionsItemSelected(item);

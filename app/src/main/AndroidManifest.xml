@@ -16,7 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SeznamActivity"></activity>
+        <activity android:name=".SeznamActivity" />
+        <activity android:name=".SeznamPodrobnosti"></activity>
     </application>
 
 </manifest>

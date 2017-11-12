@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by marti on 17. 10. 2017.
@@ -121,11 +122,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         values.put(KEY_DATUM, produkt.getDatum());
         values.put(KEY_KUSY, produkt.getKusy());
         values.put(KEY_OBRAZEK, getBitmapAsByteArray(produkt.getObrazek()));
-
         return db.update(TABLE_PRODUKTY, values, KEY_ID + "=?", new String[]{String.valueOf(produkt.getId())});
     }
 
-    public void DeleteProdukt(Produkt produkt)
+    public void deleteProdukt(Produkt produkt)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_PRODUKTY, KEY_ID + "=?", new String[]{String.valueOf(produkt.getId())});
