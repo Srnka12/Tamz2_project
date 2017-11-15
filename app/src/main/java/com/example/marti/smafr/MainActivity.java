@@ -1,8 +1,12 @@
 package com.example.marti.smafr;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -10,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,9 +24,9 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
     EditText editTxtJmeno;
     DatePicker datum;
     NumberPicker np;
+    ImageView imgNahled;
 
     String globalDatum;
-    Bitmap globalImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,8 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
         datum = (DatePicker)findViewById(R.id.datum);
         datum.init(2017, 0, 1, this);
         globalDatum = "01" + "/" + "01" + "/" + "2017";
+
+        imgNahled = (ImageView) findViewById(R.id.imgNahled);
     }
 
     @Override
@@ -48,9 +55,6 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         globalDatum = format.format(calendar.getTime());
-
-        //myText.setText(names[globalMonth]);
-        //myImage.setImageResource(zodiacSymbols[globalMonth]);
     }
 
     public void FotoClick(View v)
@@ -61,9 +65,14 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
 
     public void VlozeniClick(View v)
     {
+        //ziskani Bitmpa z ImageView
+        BitmapDrawable drawable = (BitmapDrawable) imgNahled.getDrawable();
+        Bitmap globalImg = drawable.getBitmap();
+
         Produkt produkt = new Produkt(editTxtJmeno.getText().toString(), globalDatum,
                 np.getValue(), globalImg);
 
+        //vlozeni produktu
         DatabaseHelper db = new DatabaseHelper(this);
         db.insertProdukt(produkt);
 
@@ -71,11 +80,7 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
         Log.d("datum", " " + globalDatum);
         Log.d("kusu", " " + np.getValue());
 
-        editTxtJmeno.setText(null);
-        datum.init(2017, 0, 1, this);
-        globalDatum = "01" + "/" + "01" + "/" + "2017";
-        np.setValue(1);
-        globalImg = null;
+        ObnoveniActivity();
     }
 
     @Override
@@ -88,9 +93,39 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
             if(requestCode == 1)
             {
                 Bitmap cameraImages = (Bitmap) data.getExtras().get("data");
-                globalImg = cameraImages;
+                imgNahled.setImageBitmap(cameraImages);
             }
         }
+    }
+
+    private void ObnoveniActivity() {
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        MainActivity.this.finish();
+        startActivity(intent);
+    }
+
+    private void DialogOtevreni() {
+
+        //vytvoreni dialogu
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Odstranit");
+
+        alertDialogBuilder
+                .setMessage("Opravdu chcete smazat všechny produkty?")
+                .setCancelable(false)
+                .setPositiveButton("ano", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        deleteDatabase("produktManager");
+                    }
+                })
+                .setNegativeButton("ne", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ObnoveniActivity();
+                    }
+                });
+
+        alertDialogBuilder.create();
+        alertDialogBuilder.show();
     }
 
     @Override
@@ -113,7 +148,7 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
 
         if(id == R.id.smazani)
         {
-            this.deleteDatabase("produktManager");
+            DialogOtevreni();
         }
 
         return super.onOptionsItemSelected(item);
