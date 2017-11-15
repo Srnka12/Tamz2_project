@@ -1,11 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editPole"
+            android:layout_width="313dp"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:inputType="none" />
+
+        <ImageView
+            android:id="@+id/buttonPotvrzeni"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:src="@android:drawable/ic_menu_search" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/listView1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
+
 </LinearLayout>

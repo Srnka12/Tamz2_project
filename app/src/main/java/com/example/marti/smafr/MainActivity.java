@@ -31,13 +31,13 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
         editTxtJmeno = (EditText)findViewById(R.id.editTxtJmeno);
 
         np = (NumberPicker) findViewById(R.id.npKusy);
-        np.setMinValue(0);
+        np.setMinValue(1);
         np.setMaxValue(20);
         np.setWrapSelectorWheel(true);
 
         datum = (DatePicker)findViewById(R.id.datum);
         datum.init(2017, 0, 1, this);
-        globalDatum = "01" + "." + "01" + "." + "2017";
+        globalDatum = "01" + "/" + "01" + "/" + "2017";
     }
 
     @Override
@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, monthOfYear, dayOfMonth);
 
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         globalDatum = format.format(calendar.getTime());
 
         //myText.setText(names[globalMonth]);
@@ -73,8 +73,8 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
 
         editTxtJmeno.setText(null);
         datum.init(2017, 0, 1, this);
-        globalDatum = "01" + "." + "01" + "." + "2017";
-        np.setValue(0);
+        globalDatum = "01" + "/" + "01" + "/" + "2017";
+        np.setValue(1);
         globalImg = null;
     }
 
@@ -107,18 +107,12 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
         if(id == R.id.seznam)
         {
             //Toast.makeText(getApplicationContext(), "About", Toast.LENGTH_SHORT).show();
-
             Intent intent = new Intent (this, SeznamActivity.class);
             startActivity(intent);
         }
 
         if(id == R.id.smazani)
         {
-            //Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
-            //Intent intent = new Intent(this, Main4Activity.class);
-            //startAactivity(intent);
-            //Activita zacina s request kodem 333
-            //startActivityForResult(intent, 333);
             this.deleteDatabase("produktManager");
         }
 
