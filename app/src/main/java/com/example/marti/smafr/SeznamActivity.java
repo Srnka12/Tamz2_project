@@ -81,7 +81,7 @@ public class SeznamActivity extends Activity {
                 produkty.clear();
                 produkty = newProdukty;
             }
-            else
+            else if (i == 4)
             {
                 String text = extras.getString("string");
                 List<Produkt> newProdukty = new ArrayList<Produkt>();
@@ -93,6 +93,27 @@ public class SeznamActivity extends Activity {
                     {
                         newProdukty.add(position, produkty.get(j));
                         position++;
+                    }
+                }
+
+                produkty.clear();
+                produkty = newProdukty;
+            }
+            else
+            {
+                List<String> produktyJmena = new ArrayList<String>();
+                List<Produkt> newProdukty = new ArrayList<Produkt>();
+                int position = 0;
+
+                produktyJmena = extras.getStringArrayList("seznamProduktyJmena");
+
+                for(int j = 0; j < produkty.size(); j++)
+                {
+                    for(int k = 0; k < produktyJmena.size(); k++) {
+                        if (produkty.get(j).jmeno.equals(produktyJmena.get(k))) {
+                            newProdukty.add(position, produkty.get(j));
+                            position++;
+                        }
                     }
                 }
 

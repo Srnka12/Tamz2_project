@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.StringTokenizer;
 
 public class MainActivity extends Activity implements DatePicker.OnDateChangedListener{
 
@@ -41,8 +42,17 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
         np.setWrapSelectorWheel(true);
 
         datum = (DatePicker)findViewById(R.id.datum);
-        datum.init(2017, 0, 1, this);
-        globalDatum = "01" + "/" + "01" + "/" + "2017";
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        globalDatum = df.format(c.getTime());
+
+        StringTokenizer tokens = new StringTokenizer(globalDatum, "/");
+        int aktualniDen = Integer.parseInt(tokens.nextToken());
+        int aktualniMesic = Integer.parseInt(tokens.nextToken());
+        int aktualniRok = Integer.parseInt(tokens.nextToken());
+
+        datum.init(aktualniRok, (aktualniMesic - 1), aktualniDen, this);
+        //globalDatum = "01" + "/" + "01" + "/" + "2017";
 
         imgNahled = (ImageView) findViewById(R.id.imgNahled);
     }

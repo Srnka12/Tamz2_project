@@ -33,8 +33,6 @@ public class SeznamPodrobnosti extends Activity implements DatePicker.OnDateChan
     String globalDatum;
     Bitmap obrazek;
 
-    boolean potvrzeni;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +97,7 @@ public class SeznamPodrobnosti extends Activity implements DatePicker.OnDateChan
             {
                 Bitmap cameraImages = (Bitmap) data.getExtras().get("data");
                 obrazek = cameraImages;
+                img.setImageBitmap(obrazek);
             }
         }
     }

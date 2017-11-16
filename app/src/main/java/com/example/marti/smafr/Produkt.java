@@ -9,9 +9,6 @@ import android.graphics.Bitmap;
 public class Produkt {
     int id;
     String jmeno;
-    int den;
-    int mesic;
-    int rok;
     String datum;
     int kusy;
     Bitmap obrazek;
