@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/textura"
     tools:context="com.example.marti.smafr.MainActivity">
 
     <ImageView
@@ -26,16 +27,16 @@
         android:id="@+id/foceni"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:onClick="FotoClick"
         android:text="Vyfotit"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.206"
-        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/datum"
         app:layout_constraintVertical_bias="1.0" />
 
@@ -45,67 +46,67 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="13dp"
         android:calendarViewShown="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="13dp"
         app:layout_constraintTop_toBottomOf="@+id/editTxtJmeno" />
 
     <Button
         android:id="@+id/vlozeni"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="VlozeniClick"
-        android:text="Vlož"
-        app:layout_constraintLeft_toRightOf="@+id/foceni"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="84dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.522"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:onClick="VlozeniClick"
+        android:text="Vlož"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toRightOf="@+id/foceni"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/datum"
-        app:layout_constraintVertical_bias="0.949" />
+        app:layout_constraintVertical_bias="0.948" />
 
     <EditText
         android:id="@+id/editTxtJmeno"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="44dp"
+        android:layout_marginTop="38dp"
         android:ems="10"
         android:hint="Název"
         android:inputType="text"
-        android:layout_marginTop="38dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="44dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <NumberPicker
         android:id="@+id/npKusy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/datum"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginBottom="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/foceni"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/foceni"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/datum" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Počet kusů:"
-        app:layout_constraintRight_toLeftOf="@+id/npKusy"
-        android:layout_marginRight="3dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
-        app:layout_constraintBottom_toBottomOf="@+id/npKusy"
         android:layout_marginBottom="0dp"
-        app:layout_constraintTop_toTopOf="@+id/npKusy"
-        android:layout_marginTop="8dp" />
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="8dp"
+        android:text="Počet kusů:"
+        app:layout_constraintBottom_toBottomOf="@+id/npKusy"
+        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/npKusy"
+        app:layout_constraintTop_toTopOf="@+id/npKusy" />
 
 </android.support.constraint.ConstraintLayout>

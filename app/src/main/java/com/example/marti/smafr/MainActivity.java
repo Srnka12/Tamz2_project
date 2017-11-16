@@ -28,6 +28,7 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
     ImageView imgNahled;
 
     String globalDatum;
+    boolean priznak = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,6 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
         int aktualniRok = Integer.parseInt(tokens.nextToken());
 
         datum.init(aktualniRok, (aktualniMesic - 1), aktualniDen, this);
-        //globalDatum = "01" + "/" + "01" + "/" + "2017";
 
         imgNahled = (ImageView) findViewById(R.id.imgNahled);
     }
@@ -75,22 +75,30 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
 
     public void VlozeniClick(View v)
     {
-        //ziskani Bitmpa z ImageView
-        BitmapDrawable drawable = (BitmapDrawable) imgNahled.getDrawable();
-        Bitmap globalImg = drawable.getBitmap();
+        //osetreni vlozeni obrazku
+        if(priznak == true)
+        {
+            //ziskani Bitmap z ImageView
+            BitmapDrawable drawable = (BitmapDrawable) imgNahled.getDrawable();
+            Bitmap globalImg = drawable.getBitmap();
 
-        Produkt produkt = new Produkt(editTxtJmeno.getText().toString(), globalDatum,
-                np.getValue(), globalImg);
+            if(editTxtJmeno != null) {
+                Produkt produkt = new Produkt(editTxtJmeno.getText().toString(), globalDatum,
+                        np.getValue(), globalImg);
 
-        //vlozeni produktu
-        DatabaseHelper db = new DatabaseHelper(this);
-        db.insertProdukt(produkt);
+                //vlozeni produktu
+                DatabaseHelper db = new DatabaseHelper(this);
+                db.insertProdukt(produkt);
 
-        Log.d("jmeno", " " + editTxtJmeno.getText());
-        Log.d("datum", " " + globalDatum);
-        Log.d("kusu", " " + np.getValue());
+            /*
+            Log.d("jmeno", " " + editTxtJmeno.getText());
+            Log.d("datum", " " + globalDatum);
+            Log.d("kusu", " " + np.getValue());
+            */
 
-        ObnoveniActivity();
+                ObnoveniActivity();
+            }
+        }
     }
 
     @Override
@@ -104,6 +112,7 @@ public class MainActivity extends Activity implements DatePicker.OnDateChangedLi
             {
                 Bitmap cameraImages = (Bitmap) data.getExtras().get("data");
                 imgNahled.setImageBitmap(cameraImages);
+                priznak = true;
             }
         }
     }
