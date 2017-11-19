@@ -2,11 +2,16 @@ package com.example.marti.smafr;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
@@ -16,7 +21,9 @@ import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class SeznamPodrobnosti extends Activity implements DatePicker.OnDateChangedListener{
@@ -32,6 +39,13 @@ public class SeznamPodrobnosti extends Activity implements DatePicker.OnDateChan
     int globalYear;
     String globalDatum;
     Bitmap obrazek;
+
+    /*
+    //notifikace
+    DatabaseHelper db1;
+    List<Produkt> produkty;
+    List<Integer> produktyId = new ArrayList<Integer>();
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,4 +200,96 @@ public class SeznamPodrobnosti extends Activity implements DatePicker.OnDateChan
     public void SmazaniClick(View v){
         DialogOtevreni();
     }
+/*
+    private String AktualniDatum()
+    {
+        Calendar c = Calendar.getInstance();
+
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = df.format(c.getTime());
+
+        return formattedDate;
+    }
+
+    public void NotifikaceClick(View v) {
+        showNotification();
+    }
+
+    private void showNotification() {
+
+        String aktualniDatum = AktualniDatum();
+
+        StringTokenizer tokens = new StringTokenizer(aktualniDatum, "/");
+        int aktualniDen = Integer.parseInt(tokens.nextToken());
+        int aktualniMesic = Integer.parseInt(tokens.nextToken());
+        int aktualniRok = Integer.parseInt(tokens.nextToken());
+
+        db1 = new DatabaseHelper(getApplicationContext());
+        produkty = db1.getAllProdukty();
+        int position = 0;
+
+        for(int i = 0; i < produkty.size(); i++)
+        {
+            StringTokenizer tokens1 = new StringTokenizer(produkty.get(i).datum, "/");
+            int den = Integer.parseInt(tokens1.nextToken());
+            int mesic = Integer.parseInt(tokens1.nextToken());
+            int rok = Integer.parseInt(tokens1.nextToken());
+
+            if(rok < aktualniRok)
+            {
+                produktyId.add(position, produkty.get(i).id);
+                position++;
+            }
+            else if (rok == aktualniRok)
+            {
+                if(mesic < aktualniMesic)
+                {
+                    produktyId.add(position, produkty.get(i).id);
+                    position++;
+                }
+                else if(mesic == aktualniMesic && den <= aktualniDen + 3)
+                {
+                    produktyId.add(position, produkty.get(i).id);
+                    position++;
+                }
+            }
+        }
+
+        int velikost = produktyId.size();
+        //ContentValues cv = new ContentValues();
+        //cv.put("velikost", velikost);
+
+        Intent resultIntent = new Intent(getApplicationContext(), SeznamActivity.class);
+
+        //prenos hodnot do dalsi aktivity s danym klicem pro synchronizaci
+        Bundle bundle = new Bundle();
+        bundle.putInt("key", 5);
+
+        ArrayList<Integer> produktySeznam = new ArrayList<Integer>(produktyId);
+
+        //prenos listu produktu do dalsi aktivity
+        bundle.putIntegerArrayList("produktySeznam", produktySeznam);
+        //bundle.put("seznamProduktyJmena", produktyExpirace);
+
+        resultIntent.putExtras(bundle);
+
+        //resultIntent.putExtra("seznam", produktyExpiraceJmena);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        getApplicationContext(),
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+                getApplicationContext()).setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Zkontroluj ledničku!")
+                .setContentText("Produktů s blížící se (uplynulou) dobou expirace: " + velikost)
+                .setContentIntent(resultPendingIntent);
+
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(1, mBuilder.build());
+    }
+    */
 }

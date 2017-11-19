@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
 public class NotifyService extends IntentService {
     DatabaseHelper db;
     List<Produkt> produkty;
-    List<String> produktyExpirace = new ArrayList<String>();
+    List<Integer> produktyId = new ArrayList<Integer>();
 
     public NotifyService() {
         super("NotifyService");
@@ -50,7 +50,7 @@ public class NotifyService extends IntentService {
     }
 
     private void showNotification() {
-/*
+
         String aktualniDatum = AktualniDatum();
 
         StringTokenizer tokens = new StringTokenizer(aktualniDatum, "/");
@@ -58,7 +58,7 @@ public class NotifyService extends IntentService {
         int aktualniMesic = Integer.parseInt(tokens.nextToken());
         int aktualniRok = Integer.parseInt(tokens.nextToken());
 
-        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+        db = new DatabaseHelper(getApplicationContext());
         produkty = db.getAllProdukty();
         int position = 0;
 
@@ -69,30 +69,46 @@ public class NotifyService extends IntentService {
             int mesic = Integer.parseInt(tokens1.nextToken());
             int rok = Integer.parseInt(tokens1.nextToken());
 
-            if (mesic == aktualniMesic && rok == aktualniRok)
+            if(rok < aktualniRok)
             {
-                if(den + 3 <= aktualniDen)
+                produktyId.add(position, produkty.get(i).id);
+                position++;
+            }
+            else if (rok == aktualniRok)
+            {
+                if(mesic < aktualniMesic)
                 {
-                    produktyExpirace.add(position, produkty.get(i).jmeno);
+                    produktyId.add(position, produkty.get(i).id);
+                    position++;
+                }
+                else if(mesic == aktualniMesic && den <= aktualniDen + 3)
+                {
+                    produktyId.add(position, produkty.get(i).id);
                     position++;
                 }
             }
         }
 
-        int velikost = produktyExpirace.size();
+        int velikost = produktyId.size();
         //ContentValues cv = new ContentValues();
         //cv.put("velikost", velikost);
-*/
+
         Intent resultIntent = new Intent(getApplicationContext(), SeznamActivity.class);
 
-        //Bundle bundle = new Bundle();
-        //bundle.putInt("key", 5);
+        //prenos hodnot do dalsi aktivity s danym klicem pro synchronizaci
+        Bundle bundle = new Bundle();
+        bundle.putInt("key", 5);
 
-        //ArrayList<String> produktyExpiraceJmena = new ArrayList<>(produktyExpirace);
-        //bundle.putStringArrayList("seznamProduktyJmena", produktyExpiraceJmena);
-        //resultIntent.putExtras(bundle);
+        //pretypovani Listu na ArrayList
+        ArrayList<Integer> produktySeznam = new ArrayList<Integer>(produktyId);
 
-        //resultIntent.putExtra("seznam", produktyExpiraceJmena.toArray());
+        //prenos listu produktu do dalsi aktivity
+        bundle.putIntegerArrayList("produktySeznam", produktySeznam);
+        //bundle.put("seznamProduktyJmena", produktyExpirace);
+
+        resultIntent.putExtras(bundle);
+
+        //resultIntent.putExtra("seznam", produktyExpiraceJmena);
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
                         getApplicationContext(),
@@ -103,8 +119,8 @@ public class NotifyService extends IntentService {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
                 getApplicationContext()).setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Notifikace")
-                .setContentText("Počet produktů s blížící se dobou expirace do tří dnů = " + 1)//velikost)
+                .setContentTitle("Zkontroluj ledničku!")
+                .setContentText("Produktů s blížící se (uplynulou) dobou expirace: " + velikost)
                 .setContentIntent(resultPendingIntent);
 
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

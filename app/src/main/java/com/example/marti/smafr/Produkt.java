@@ -1,6 +1,7 @@
 package com.example.marti.smafr;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 /**
  * Created by marti on 17. 10. 2017.

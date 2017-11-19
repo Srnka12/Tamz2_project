@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,31 +50,32 @@ public class SeznamActivity extends Activity {
 
         if(getIntent().getExtras() != null) {
             Bundle extras = getIntent().getExtras();
-            int i = extras.getInt("key");
 
-            if(i == 1)
+            int key = extras.getInt("key");
+
+            if(key == 1)
             {
                 editPole.setHint("Název");
                 editPole.setInputType(InputType.TYPE_CLASS_TEXT);
                 editPole.setEnabled(true);
             }
-            else if(i == 2)
+            else if(key == 2)
             {
                 editPole.setHint("Datum");
                 editPole.setInputType(InputType.TYPE_CLASS_DATETIME);
                 editPole.setEnabled(true);
             }
-            else if(i == 3)
+            else if(key == 3)
             {
                 String text = extras.getString("string");
                 List<Produkt> newProdukty = new ArrayList<Produkt>();
                 int position = 0;
 
-                for(int j = 0; j < produkty.size(); j++)
+                for(int i = 0; i < produkty.size(); i++)
                 {
-                    if(produkty.get(j).jmeno.equals(text))
+                    if(produkty.get(i).jmeno.equals(text))
                     {
-                        newProdukty.add(position, produkty.get(j));
+                        newProdukty.add(position, produkty.get(i));
                         position++;
                     }
                 }
@@ -81,17 +83,17 @@ public class SeznamActivity extends Activity {
                 produkty.clear();
                 produkty = newProdukty;
             }
-            else if (i == 4)
+            else if (key == 4)
             {
                 String text = extras.getString("string");
                 List<Produkt> newProdukty = new ArrayList<Produkt>();
                 int position = 0;
 
-                for(int j = 0; j < produkty.size(); j++)
+                for(int i = 0; i < produkty.size(); i++)
                 {
-                    if(produkty.get(j).datum.equals(text))
+                    if(produkty.get(i).datum.equals(text))
                     {
-                        newProdukty.add(position, produkty.get(j));
+                        newProdukty.add(position, produkty.get(i));
                         position++;
                     }
                 }
@@ -101,18 +103,21 @@ public class SeznamActivity extends Activity {
             }
             else
             {
-                List<String> produktyJmena = new ArrayList<String>();
+                List<Integer> produktyId;
+                produktyId = (List<Integer>) extras.getIntegerArrayList("produktySeznam");
+
                 List<Produkt> newProdukty = new ArrayList<Produkt>();
                 int position = 0;
 
-                produktyJmena = extras.getStringArrayList("seznamProduktyJmena");
-
-                for(int j = 0; j < produkty.size(); j++)
+                for(int i = 0; i < produktyId.size(); i++)
                 {
-                    for(int k = 0; k < produktyJmena.size(); k++) {
-                        if (produkty.get(j).jmeno.equals(produktyJmena.get(k))) {
+                    for(int j = 0; j < produkty.size(); j++)
+                    {
+                        if(produkty.get(j).id == produktyId.get(i))
+                        {
                             newProdukty.add(position, produkty.get(j));
                             position++;
+                            break;
                         }
                     }
                 }
