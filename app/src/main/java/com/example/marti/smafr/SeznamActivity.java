@@ -21,7 +21,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,8 +66,8 @@ public class SeznamActivity extends Activity {
             }
             else if(key == 3)
             {
-                String text = extras.getString("string");
                 List<Produkt> newProdukty = new ArrayList<Produkt>();
+                String text = extras.getString("string");
                 int position = 0;
 
                 for(int i = 0; i < produkty.size(); i++)
@@ -85,8 +84,8 @@ public class SeznamActivity extends Activity {
             }
             else if (key == 4)
             {
-                String text = extras.getString("string");
                 List<Produkt> newProdukty = new ArrayList<Produkt>();
+                String text = extras.getString("string");
                 int position = 0;
 
                 for(int i = 0; i < produkty.size(); i++)
@@ -103,10 +102,9 @@ public class SeznamActivity extends Activity {
             }
             else
             {
+                List<Produkt> newProdukty = new ArrayList<Produkt>();
                 List<Integer> produktyId;
                 produktyId = (List<Integer>) extras.getIntegerArrayList("produktySeznam");
-
-                List<Produkt> newProdukty = new ArrayList<Produkt>();
                 int position = 0;
 
                 for(int i = 0; i < produktyId.size(); i++)

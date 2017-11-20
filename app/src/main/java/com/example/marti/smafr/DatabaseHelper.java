@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -82,7 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     {
         List<Produkt> produktList = new ArrayList<>();
 
-        String selectQuery = "SELECT * FROM " + TABLE_PRODUKTY;
+        String selectQuery = "SELECT * FROM " + TABLE_PRODUKTY + " ORDER BY DATE(" + KEY_DATUM + ") ASC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

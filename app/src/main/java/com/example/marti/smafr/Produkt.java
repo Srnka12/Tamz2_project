@@ -3,6 +3,8 @@ package com.example.marti.smafr;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import java.util.StringTokenizer;
+
 /**
  * Created by marti on 17. 10. 2017.
  */
@@ -54,11 +56,25 @@ public class Produkt {
 
     public String getDatum()
     {
+        //uprava pro vkladani do databaze
+        StringTokenizer tokens = new StringTokenizer(datum, "/");
+        int den = Integer.parseInt(tokens.nextToken());
+        int mesic = Integer.parseInt(tokens.nextToken());
+        int rok = Integer.parseInt(tokens.nextToken());
+
+        datum = rok + "-" + mesic + "-" + den;
         return datum;
     }
 
-    public void setDatum(String datum) {
-        this.datum = datum;
+    public void setDatum(String datum)
+    {
+        //uprava pro nahrani z databaze
+        StringTokenizer tokens = new StringTokenizer(datum, "-");
+        int rok = Integer.parseInt(tokens.nextToken());
+        int mesic = Integer.parseInt(tokens.nextToken());
+        int den = Integer.parseInt(tokens.nextToken());
+
+        this.datum = den + "/" + mesic + "/" + rok;
     }
 
     public int getKusy() {
