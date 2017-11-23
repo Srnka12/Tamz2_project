@@ -58,9 +58,9 @@ public class Produkt {
     {
         //uprava pro vkladani do databaze
         StringTokenizer tokens = new StringTokenizer(datum, "/");
-        int den = Integer.parseInt(tokens.nextToken());
-        int mesic = Integer.parseInt(tokens.nextToken());
-        int rok = Integer.parseInt(tokens.nextToken());
+        String den = tokens.nextToken();
+        String mesic = tokens.nextToken();
+        String rok = tokens.nextToken();
 
         datum = rok + "-" + mesic + "-" + den;
         return datum;
@@ -70,9 +70,9 @@ public class Produkt {
     {
         //uprava pro nahrani z databaze
         StringTokenizer tokens = new StringTokenizer(datum, "-");
-        int rok = Integer.parseInt(tokens.nextToken());
-        int mesic = Integer.parseInt(tokens.nextToken());
-        int den = Integer.parseInt(tokens.nextToken());
+        String rok = tokens.nextToken();
+        String mesic = tokens.nextToken();
+        String den = tokens.nextToken();
 
         this.datum = den + "/" + mesic + "/" + rok;
     }
